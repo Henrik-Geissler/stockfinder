@@ -1,22 +1,18 @@
 import { Box, Typography, Chip } from '@mui/material'
 import { TrendingUp, TrendingDown, Pause } from '@mui/icons-material'
 import { SkeletonText } from '../../../components/SkeletonText'
+import { SecurityMarketData } from '../domain/SecurityMarketData'
 
 interface SecurityPriceBadgeProps {
-  price?: number
+  marketData?: SecurityMarketData
   currency?: string
-  change?: number
-  changePercent?: number
-  isTrading?: boolean
 }
 
 export function SecurityPriceBadge({
-  price,
+  marketData,
   currency = '',
-  change = 0,
-  changePercent = 0,
-  isTrading = false,
 }: SecurityPriceBadgeProps) {
+  const change = marketData?.change.absolute
   const isPositive = change > 0
   const isNegative = change < 0
 
@@ -33,7 +29,7 @@ export function SecurityPriceBadge({
       }}
     >
       {/* Price and Change*/}
-      {isTrading && (
+      {marketData?.isActivelyTrading && (
         <>
           <Box
             sx={{
@@ -46,7 +42,7 @@ export function SecurityPriceBadge({
               variant="h4"
               component="div"
               sx={{ fontWeight: 'bold' }}
-              content={`${currency} ${price?.toFixed(2) ?? ''}`}
+              content={`${currency} ${marketData?.price.toFixed(2) ?? ''}`}
             />
             <Typography variant="body2" color="text.secondary">
               Current Price
@@ -100,7 +96,7 @@ export function SecurityPriceBadge({
               }}
             >
               {isPositive ? '+' : ''}
-              {changePercent.toFixed(2)}%
+              {marketData?.change.percentage.toFixed(2)}%
             </Typography>
           </Box>
         </>
@@ -108,9 +104,9 @@ export function SecurityPriceBadge({
 
       {/* Trading Status */}
       <Chip
-        label={isTrading ? 'Trading' : 'Exchange Closed'}
-        color={isTrading ? 'success' : 'default'}
-        variant={isTrading ? 'filled' : 'outlined'}
+        label={marketData?.isActivelyTrading ? 'Trading' : 'Exchange Closed'}
+        color={marketData?.isActivelyTrading ? 'success' : 'default'}
+        variant={marketData?.isActivelyTrading ? 'filled' : 'outlined'}
         size="small"
         sx={{
           fontWeight: 500,

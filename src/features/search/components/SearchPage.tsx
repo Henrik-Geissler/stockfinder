@@ -1,8 +1,7 @@
 import { Box, Container, Typography, CircularProgress } from '@mui/material'
-import { useQuery } from '@tanstack/react-query'
 import { useSearchParams } from 'react-router-dom'
-import { searchSecurities } from '../api/searchApi'
 import { SearchResultItem } from './SearchResultItem'
+import { useSecuritiesByName } from '../hooks/useSecuritiesByName'
 
 export function SearchPage() {
   const [searchParams] = useSearchParams()
@@ -13,13 +12,7 @@ export function SearchPage() {
     isLoading,
     error,
     isFetching,
-  } = useQuery({
-    queryKey: ['searchResults', query],
-    queryFn: () => searchSecurities(query, 20),
-    enabled: !!query,
-    staleTime: 2 * 60 * 1000, // Consider data stale after 2 minutes
-    placeholderData: previousData => previousData, // Keep previous results while fetching new ones
-  })
+  } = useSecuritiesByName(query, 20)
 
   if (!query) {
     return (

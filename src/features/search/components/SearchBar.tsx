@@ -9,8 +9,8 @@ import {
 import { Search as SearchIcon } from '@mui/icons-material'
 import { useState, useEffect, useRef } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
-import { useDebounce } from '../hooks/useDebounce'
 import { SearchDropdown } from './SearchDropdown'
+import { useDebounce } from '../../../hooks/useDebounce'
 
 interface SearchBarProps {
   placeholder?: string

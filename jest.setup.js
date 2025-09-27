@@ -12,3 +12,6 @@ global.console = {
   log: jest.fn(),
   error: jest.fn(),
 };
+
+// Setup testing library
+require('@testing-library/jest-dom');

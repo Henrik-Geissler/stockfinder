@@ -1,4 +1,4 @@
-export interface CompanyProfile {
+export interface ProfileResponseDTO {
   symbol: string
   price: number
   beta: number

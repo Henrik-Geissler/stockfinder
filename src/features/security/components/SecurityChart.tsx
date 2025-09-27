@@ -10,12 +10,7 @@ import {
 } from '@mui/material'
 import Highcharts from 'highcharts'
 import HighchartsReact from 'highcharts-react-official'
-import { useQuery } from '@tanstack/react-query'
-import {
-  getHistoricalPrices,
-  getDateRangeForPeriod,
-  type HistoricalPricePoint,
-} from '../api/historicalPrices'
+import { useHistoricalEod } from '../hooks/useHistoricalEod'
 
 // Time period options
 const TIME_PERIODS = [
@@ -44,27 +39,7 @@ export function SecurityChart({ symbol }: SecurityChartProps) {
     isLoading,
     error,
     isFetching,
-  } = useQuery({
-    queryKey: ['historicalPrices', symbol, selectedPeriod],
-    queryFn: async () => {
-      const dateRange = getDateRangeForPeriod(selectedPeriod)
-      const data = await getHistoricalPrices(
-        symbol,
-        dateRange.from,
-        dateRange.to
-      )
-
-      // Convert to Highcharts format [timestamp, closePrice]
-      return data.map((point: HistoricalPricePoint) => [
-        new Date(point.date).getTime(),
-        point.price,
-      ])
-    },
-    enabled: !!symbol,
-    staleTime: 5 * 60 * 1000, // 5 minutes
-    gcTime: 10 * 60 * 1000, // 10 minutes
-    placeholderData: previousData => previousData, // Keep previous results while fetching new ones
-  })
+  } = useHistoricalEod(symbol, selectedPeriod)
 
   // Calculate chart color based on price change from first to last data point
   const getChartColor = () => {

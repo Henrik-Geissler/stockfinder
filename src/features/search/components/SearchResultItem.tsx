@@ -1,20 +1,20 @@
 import { Box, Typography, useTheme } from '@mui/material'
 import { Link } from 'react-router-dom'
-import type { SearchResult } from '../domain/SearchResult'
 import SecurityIcon from '../../../components/SecurityIcon'
+import { Security } from '../../../domain/Security'
 
 interface SearchResultItemProps {
-  result: SearchResult
+  security: Security
   onClick?: () => void
 }
 
-export function SearchResultItem({ result, onClick }: SearchResultItemProps) {
+export function SearchResultItem({ security, onClick }: SearchResultItemProps) {
   const theme = useTheme()
 
   return (
     <Box
       component={Link}
-      to={`/securities/${result.symbol}`}
+      to={`/securities/${security.symbol}`}
       onClick={onClick}
       sx={{
         display: 'flex',
@@ -32,16 +32,16 @@ export function SearchResultItem({ result, onClick }: SearchResultItemProps) {
         },
       }}
     >
-      <SecurityIcon symbol={result.symbol} name={result.name} />
+      <SecurityIcon symbol={security.symbol} name={security.name} />
       <Box sx={{ flex: 1, ml: 1.5 }}>
         <Typography variant="body1" sx={{ fontWeight: 500, mb: 0.5 }}>
-          {result.name}
+          {security.name}
         </Typography>
         <Typography
           variant="body2"
           sx={{ color: 'primary.main', opacity: 0.8 }}
         >
-          {result.symbol} • {result.exchange}
+          {security.symbol} • {security.exchange.name}
         </Typography>
       </Box>
     </Box>

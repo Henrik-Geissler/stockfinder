@@ -1,12 +1,12 @@
-import { CompanyProfile } from '../domain/CompanyProfile'
 import { Box, Typography, Paper, useTheme } from '@mui/material'
 
 import SecurityIcon from '../../../components/SecurityIcon'
 import { SkeletonText } from '../../../components/SkeletonText'
 import { SecurityPriceBadge } from './SecurityPriceBadge'
+import { SecurityProfile } from '../domain/SecurityProfile'
 
 interface SecurityHeaderProps {
-  profile?: CompanyProfile
+  profile?: SecurityProfile
   symbol: string
 }
 
@@ -41,24 +41,28 @@ export function SecurityHeader({ profile, symbol }: SecurityHeaderProps) {
           }}
         >
           <SecurityIcon
-            symbol={profile?.symbol ?? symbol}
-            name={profile?.companyName}
+            symbol={profile?.security.symbol ?? symbol}
+            name={profile?.security.name}
             size={80}
           />
           <Box>
             <SkeletonText
               variant="h3"
               gutterBottom
-              content={profile?.companyName}
+              content={profile?.security.name}
             />
 
             <Typography variant="h4" color="primary.main" gutterBottom>
-              {profile?.symbol ?? symbol}
+              {profile?.security.symbol ?? symbol}
             </Typography>
             <SkeletonText
               variant="body1"
               color="text.secondary"
-              content={[profile?.exchange, profile?.sector, profile?.country]
+              content={[
+                profile?.security.exchange.name,
+                profile?.companyDetails.sector,
+                profile?.companyDetails.companyContactData.country,
+              ]
                 .filter(Boolean)
                 .join(' • ')}
             />
@@ -68,11 +72,8 @@ export function SecurityHeader({ profile, symbol }: SecurityHeaderProps) {
         {/* Price Badge */}
         <Box sx={{ flexShrink: 0 }}>
           <SecurityPriceBadge
-            price={profile?.price}
-            currency={profile?.currency}
-            change={profile?.change}
-            changePercent={profile?.changePercentage}
-            isTrading={profile?.isActivelyTrading}
+            marketData={profile?.marketData}
+            currency={profile?.security.currency}
           />
         </Box>
       </Box>

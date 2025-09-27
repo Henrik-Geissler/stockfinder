@@ -7,9 +7,8 @@ import {
   useTheme,
 } from '@mui/material'
 import { Link } from 'react-router-dom'
-import { useQuery } from '@tanstack/react-query'
-import { searchSecurities } from '../api/searchApi'
 import { SearchResultItem } from './SearchResultItem'
+import { useSecuritiesByName } from '../hooks/useSecuritiesByName'
 
 interface SearchDropdownProps {
   query: string
@@ -23,17 +22,7 @@ export function SearchDropdown({
   onClose,
 }: SearchDropdownProps) {
   const theme = useTheme()
-  const {
-    data: results,
-    isLoading,
-    isFetching,
-  } = useQuery({
-    queryKey: ['searchDropdown', query],
-    queryFn: () => searchSecurities(query, 8), // Limit to 8 results for dropdown
-    enabled: !!query && query.length >= 2, // Only search with 2+ characters
-    staleTime: 30 * 1000, // Consider data stale after 30 seconds
-    placeholderData: previousData => previousData, // Keep previous results while fetching new ones
-  })
+  const { data: results, isLoading, isFetching } = useSecuritiesByName(query)
 
   if (!isOpen || query.length < 2) {
     return null
@@ -83,10 +72,10 @@ export function SearchDropdown({
         {/* Show results if we have any (either new or previous) */}
         {results && results.length > 0 && (
           <>
-            {results.map(result => (
+            {results.map(security => (
               <SearchResultItem
-                key={result.symbol}
-                result={result}
+                key={security.symbol}
+                security={security}
                 onClick={handleResultClick}
               />
             ))}

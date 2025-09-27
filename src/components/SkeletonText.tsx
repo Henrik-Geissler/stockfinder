@@ -12,7 +12,6 @@ export function SkeletonText({
   isLoading = false,
   ...typographyProps
 }: SkeletonTextProps) {
-  // Calculate height based on Typography variant if not provided
 
   if (isLoading) {
     return (

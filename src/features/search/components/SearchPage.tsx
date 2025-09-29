@@ -110,8 +110,8 @@ export function SearchPage() {
       </Box>
 
       <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-        {results?.map(result => (
-          <SearchResultItem key={result.symbol} result={result} />
+        {results?.map(security => (
+          <SearchResultItem key={security.symbol} security={security} />
         ))}
       </Box>
     </Container>

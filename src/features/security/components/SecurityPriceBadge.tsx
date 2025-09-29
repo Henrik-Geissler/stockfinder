@@ -12,7 +12,7 @@ export function SecurityPriceBadge({
   marketData,
   currency = '',
 }: SecurityPriceBadgeProps) {
-  const change = marketData?.change.absolute
+  const change = marketData?.change.absolute ?? 0
   const isPositive = change > 0
   const isNegative = change < 0
 
